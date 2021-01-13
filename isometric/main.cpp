@@ -17,7 +17,7 @@ int main() {
     Vector2 vWorldSize = {14, 10};
     Vector2 vTileSize = {64, 32};
     Vector2 vOrigin = {5, 1};
-    int *pWorld = new int[vWorldSize.x * vWorldSize.y]{ 0 };
+    int *pWorld = new int[(int)vWorldSize.x * (int)vWorldSize.y]{ 0 };
     auto imgData = GetTextureData(tiles);
     auto colorData = GetImageData(imgData);
 
@@ -26,8 +26,14 @@ int main() {
     while(!WindowShouldClose()) {
 
         Vector2 mousePos = {(float)GetMouseX(), (float)GetMouseY()};
-        Vector2 vCell = { trunc(mousePos.x / vTileSize.x), trunc(mousePos.y / vTileSize.y) };
-        Vector2 vOffset = { fmod(mousePos.x, vTileSize.x), fmod(mousePos.y, vTileSize.y)};
+        Vector2 vCell = {
+                static_cast<float>(std::trunc(mousePos.x / vTileSize.x)),
+                static_cast<float>(std::trunc(mousePos.y / vTileSize.y))
+        };
+        Vector2 vOffset = {
+                static_cast<float>(std::fmod(mousePos.x, vTileSize.x)),
+                static_cast<float>(std::fmod(mousePos.y, vTileSize.y))
+        };
         int idx = ((42 + (int)vOffset.y) * 3 * (int)vTileSize.x) + (2 * (int)vTileSize.x) + (int)vOffset.x;
         Color pixel = colorData[idx];
 
